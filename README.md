@@ -1,4 +1,4 @@
 MBM
 ===
 
-MyBookMarks
+MyBookMarks: PHP project to store bookmarks
