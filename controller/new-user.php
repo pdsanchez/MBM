@@ -1,5 +1,5 @@
 <?php
-include_once("model/db/TableUser.class.php");
+include_once "model/db/TableUser.class.php";
 
 $createNewUser = isset($_POST["new-user"]);
 if ($createNewUser) {

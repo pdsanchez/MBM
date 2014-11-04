@@ -6,7 +6,7 @@ if ($user->isAdmin()) {
   $allUsers = $userTable->listAll();
 //  $oneEntry = $allUsers->fetchObject();
 //	$testOut = print_r($oneEntry, true);
-//	return "<pre>$testOut</pre>";
+//	$trace->info("<pre>$testOut</pre>");
 
   return include_once("view/admin/users-html.php");
 }

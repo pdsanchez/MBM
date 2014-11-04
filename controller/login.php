@@ -12,6 +12,8 @@ if ($loginFormSubmitted) {
   try {
     $role = $userTable->checkCredentials($username, $pwd);
     $user->login($username, $role);
+    
+    $log->info("LOGIN: $username - $role");
   }
   catch(Exception $e) {}
 }

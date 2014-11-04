@@ -2,6 +2,12 @@
 error_reporting(E_ALL);
 ini_set("display_errors", "1");
 
+// LOG
+include('php/log4php/Logger.php');
+Logger::configure('config-log.xml');
+$log = Logger::getLogger("main");
+$trace = Logger::getLogger("trace");
+
 // CLASSES
 include_once("model/PageData.class.php");
 include_once("model/UserLogin.class.php");

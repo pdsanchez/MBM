@@ -1,5 +1,5 @@
 <?php
-include_once("model/db/Table.class.php");
+include_once "model/db/Table.class.php";
 
 class TableUser extends Table {
   public function checkCredentials($username, $pwd) {

@@ -1,7 +1,8 @@
 <?php
-include_once("model/db/TableUser.class.php");
-include_once("model/db/TableFolder.class.php");
-include_once("model/db/TableBookmark.class.php");
+include_once "model/db/TableUser.class.php";
+include_once "model/db/TableFolder.class.php";
+include_once "model/db/TableBookmark.class.php";
+include_once "model/db/TableLog.class.php";
 
 // Create Database
 $dbname = "mbm";
@@ -23,6 +24,10 @@ $tFolder->install();
 
 $tBm = new TableBookmark($db);
 $tBm->install();
+
+$tLog = new TableLog($db);
+$tLog->install();
+
 
 // Insert data
 $tUser->create("admin", "admin", 1);

@@ -1,0 +1,30 @@
+<!-- http://logging.apache.org/log4php/ -->
+<configuration xmlns="http://logging.apache.org/log4php/">
+  <appender name="db" class="LoggerAppenderPDO">
+    <param name="dsn" value="mysql:host=localhost;dbname=mbm" />
+    <param name="user" value="mbm" />
+    <param name="password" value="mbm_us3r" />
+    <param name="table" value="log" />
+  </appender>
+  
+  <appender name="echo" class="LoggerAppenderEcho">
+    <param name="htmlLineBreaks" value="true" />
+    <layout class="LoggerLayoutPattern">
+      <param name="conversionPattern" value="%level [%F:%L]: %msg%n" />
+    </layout>
+    <!--
+    <layout class="LoggerLayoutHtml">
+      <param name="locationInfo" value="true" />
+    </layout>
+    -->
+  </appender>
+  
+  <logger name="main">
+    <level value="INFO" />
+    <appender_ref ref="db" />
+  </logger>
+  <logger name="trace">
+    <level value="DEBUG" />
+    <appender_ref ref="echo" />
+  </logger>
+</configuration>
