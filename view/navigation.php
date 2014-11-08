@@ -1,7 +1,27 @@
 <?php
 
+$nav_entry = function($page, $item) use ($user) {
+  $cl = (!isset($_GET['page']) ||
+         (isset($_GET['page']) && $_GET['page'] === $page)) ? " class=\"active\"" : "";
+  return "<li{$cl}><a href=\"index.php?page=$page\">$item</a></li>";
+};
+
+$logged_nav_entry = function($page, $item) use ($user) {
+  $li = "";
+  if ($user->isLoggedIn()) {
+    $cl = (isset($_GET['page']) && $_GET['page'] === $page) ? " class=\"active\"" : "";
+    $li = "<li{$cl}><a href=\"index.php?page=$page\">$item</a></li>";
+  }
+  return $li;
+};
+
 $admin_nav_entry = function($page, $item) use ($user) {
-  return ($user->isAdmin()) ? "<li><a href=\"index.php?page=$page\">$item</a></li>" : "";
+  $li = "";
+  if ($user->isAdmin()) {
+    $cl = (isset($_GET['page']) && $_GET['page'] === $page) ? " class=\"active\"" : "";
+    $li = "<li{$cl}><a href=\"index.php?page=$page\">$item</a></li>";
+  }
+  return $li;
 };
 
 if ($user->isLoggedIn()) {
@@ -9,11 +29,11 @@ if ($user->isLoggedIn()) {
   $loginPanel = "<form class='navbar-form navbar-right' method='post' action='index.php'>
                   <input class='btn btn-link' type='submit' value='logout' name='logout'>
                 </form>
-                <p class='navbar-text navbar-right'>logged in as {$user->getName()} $role</p>";
+                <p class='navbar-text navbar-right'><span class='glyphicon glyphicon-user'></span> logged in as {$user->getName()} $role</p>";
 }
 else {
   $loginPanel = "<ul class='nav navbar-nav navbar-right'>
-                  <li><a href='index.php?page=new-user'>Register</a></li>
+                  <li><a href='index.php?page=user-new'>Register</a></li>
                 </ul>
                 <form class='navbar-form navbar-right' method='post' action='index.php'>
                   <div class='form-group'>
@@ -41,9 +61,10 @@ return <<<HTML
     
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
       <ul class="nav navbar-nav navbar-left">
-        <li class="active"><a href="index.php?page=bookmarks">Bookmarks</a></li>
+        {$nav_entry("bookmarks", "Bookmarks")}
+        {$logged_nav_entry("upload", "Upload bookmarks file")}
         {$admin_nav_entry("users", "Users")}
-        {$admin_nav_entry("new-user", "Create User")}
+        {$admin_nav_entry("user-new", "Create User")}
         {$admin_nav_entry("logs", "Logs")}
       </ul>
       $loginPanel

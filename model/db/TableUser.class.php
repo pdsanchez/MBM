@@ -3,16 +3,20 @@ include_once "model/db/Table.class.php";
 
 class TableUser extends Table {
   public function checkCredentials($username, $pwd) {
-    $sql = "select role from user where username = ? and pwd = SHA1(?)";
+    $sql = "select id_user, role from user where username = ? and pwd = SHA1(?)";
     $data = array($username, $pwd);
     $stmt = $this->makeStatement($sql, $data);
     if ($stmt->rowCount() === 1) {
-      $out = $stmt->fetchObject()->role;
+      $reg = $stmt->fetchObject();
+      $obj = new stdClass();
+      $obj->id = $reg->id_user;
+      $obj->username = $username;
+      $obj->role = $reg->role;
     }
     else {
       throw new Exception("Login failed");
     }
-    return $out;
+    return $obj;
   }
   
   public function create($username, $pwd, $role=2, $email=null) {
@@ -23,14 +27,43 @@ class TableUser extends Table {
   }
   
   public function listAll() {
-    $sql = "select username, email, role from user";
+    $sql = "select id_user, username, email, role from user";
     return $this->makeStatement($sql);
   }
   
-  public function delete($username) {
+  public function deleteByName($username) {
     $sql = "delete from user where username=?";
     $data = array($username);
     $this->makeStatement($sql, $data);
+  }
+  
+  public function deleteById($id) {
+    $sql = "delete from user where id_user=?";
+    $data = array($id);
+    $this->makeStatement($sql, $data);
+  }
+  
+  public function updateById($id, $role=2, $email=null) {
+    $sql = "update user set role=?, email=? where id_user=?";
+    $data = array($role, $email, $id);
+    $this->makeStatement($sql, $data);
+  }
+  
+  public function changePassword($username, $newPwd1, $newPwd2) {
+    if ($newPwd1 === $newPwd2) {
+      $sql = "update user set pwd=SHA1(?) where username=?";
+      $data = array($newPwd1, $username);
+      $this->makeStatement($sql, $data);
+    }
+    else {
+      throw new Exception("Error in passwords");
+    }
+  }
+  
+  public function getById($id) {
+    $sql = "select id_user, username, pwd, email, role from user where id_user=?";
+    $data = array($id);
+    return $this->makeStatement($sql, $data)->fetchObject();
   }
   
   private function checkUser($username) {

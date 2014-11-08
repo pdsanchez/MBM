@@ -10,10 +10,10 @@ if ($loginFormSubmitted) {
   $pwd = $_POST["pwd"];
   $userTable = new TableUser($db);
   try {
-    $role = $userTable->checkCredentials($username, $pwd);
-    $user->login($username, $role);
+    $obj = $userTable->checkCredentials($username, $pwd);
+    $user->login($obj);
     
-    $log->info("LOGIN: $username - $role");
+    $log->info("LOGIN: $username - $obj->role");
   }
   catch(Exception $e) {}
 }

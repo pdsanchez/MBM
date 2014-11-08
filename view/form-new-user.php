@@ -1,8 +1,4 @@
 <?php
-if (isset($adminFormMsg) === false) {
-  $adminFormMsg = "";
-}
-
 $role = function() use ($user) {
   if ($user->isAdmin()) {
     $html = "<div class='form-group'>
@@ -22,7 +18,7 @@ $role = function() use ($user) {
 };
 
 return "
-  <form method='post' action='index.php?page=new-user' class='form-horizontal' role='form'>
+  <form method='post' action='index.php?page=user-new' class='form-horizontal' role='form'>
     <fieldset>
       <legend>Create new user</legend>
       <div class='form-group'>
@@ -50,6 +46,5 @@ return "
         </div>
       </div>
     </fieldset>
-    <p id='admin-form-msg'>$adminFormMsg</p>
   </form>";
 ?>

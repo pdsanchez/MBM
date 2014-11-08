@@ -24,6 +24,7 @@ $pagedata = new PageData("MBM:MyBookMarks");
 
 //$pagedata->addCss("css/bootstrap.min.css");
 $pagedata->addCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css");
+//$pagedata->addCss("http://bootswatch.com/cerulean/bootstrap.min.css");
 $pagedata->addCss("css/mbm.css");
 
 $pagedata->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
