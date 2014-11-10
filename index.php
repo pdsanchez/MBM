@@ -11,6 +11,7 @@ $trace = Logger::getLogger("trace");
 // CLASSES
 include_once("model/PageData.class.php");
 include_once("model/UserLogin.class.php");
+include_once "model/db/TableBookmark.class.php";
 
 // DATABASE
 $dbinfo = "mysql:host=localhost;dbname=mbm";
@@ -33,8 +34,10 @@ $pagedata->addScript("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstr
 
 // Login
 $user = new UserLogin();
-//$pagedata->addContent(include_once("controller/login.php"));
 include_once("controller/login.php");
+
+$tBm = new TableBookmark($db);
+$totalBms = $tBm->getTotal($user->getId());
 
 $pagedata->addContent(include_once("view/navigation.php"));
 $navClicked = isset($_GET["page"]);

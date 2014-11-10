@@ -4,10 +4,16 @@ include_once("model/db/Table.class.php");
 class TableBookmark extends Table {
   
   public function create($url, $userid, $description, $icon=null, $folder=1) {
-    $this->checkUrl($url);
+    $this->checkUrl($url, $userid, $folder);
     $sql = "insert into bookmark (url, username, description, icon, folder) values(?, ?, ?, ?, ?)";
     $data = array($url, $userid, $description, $icon, $folder);
     $this->makeStatement($sql, $data);
+  }
+  
+  public function getTotal($userid=0) {
+    $sql = "select count(*) from bookmark where username=?";
+    $data = array($userid);
+    return $this->makeStatement($sql, $data)->fetch(PDO::FETCH_NUM)[0];
   }
   
   private function checkUrl($url, $userid, $folder) {
@@ -17,6 +23,30 @@ class TableBookmark extends Table {
     if($stmt->rowCount() === 1) {
       throw new Exception("Error: '$url' already used");
     }
+  }
+  
+  public function getTotalSearch($term, $userid=0) {
+    $sql = "select count(*) from bookmark ";
+    $sql .= "where username=? and url like ? and description like ?";
+    $data = array($userid, "%$term%", "%$term%");
+    return $this->makeStatement($sql, $data)->fetch(PDO::FETCH_NUM)[0];
+  }
+  
+  public function search($term, $idx, $offset, $userid=0) {
+    $limit_v1 = ($idx-1)*$offset;
+    $limit_v2 = $offset;
+    $sql = "select url, description, rate, date, icon from bookmark";
+    $sql .= " where username=? and url like ? and description like ? limit $limit_v1, $limit_v2";
+    $data = array($userid, "%$term%", "%$term%");
+    return $this->makeStatement($sql, $data);
+  }
+  
+  public function getBookmarks($idx, $offset, $userid=0) {
+    $limit_v1 = ($idx-1)*$offset;
+    $limit_v2 = $offset;
+    $sql = "select url, description, rate, date, icon from bookmark where username=? limit $limit_v1, $limit_v2";
+    $data = array($userid);
+    return $this->makeStatement($sql, $data);
   }
   
   public function install() {

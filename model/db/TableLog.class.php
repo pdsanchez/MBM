@@ -6,7 +6,8 @@ class TableLog extends Table {
     $sql = "DROP TABLE IF EXISTS log;
             CREATE TABLE IF NOT EXISTS log (
               timestamp DATETIME,
-              thread INTEGER,
+              ip VARCHAR(32),
+              agent VARCHAR(256),
               logger VARCHAR(256),
               level VARCHAR(32),
               message VARCHAR(4000),
@@ -15,5 +16,19 @@ class TableLog extends Table {
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
     $this->makeStatement($sql);
   }
+  
+  //public function install() {
+  //  $sql = "DROP TABLE IF EXISTS log;
+  //          CREATE TABLE IF NOT EXISTS log (
+  //            timestamp DATETIME,
+  //            thread INTEGER,
+  //            logger VARCHAR(256),
+  //            level VARCHAR(32),
+  //            message VARCHAR(4000),
+  //            file VARCHAR(255),
+  //            line VARCHAR(10)
+  //          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+  //  $this->makeStatement($sql);
+  //}
 }
 ?>
